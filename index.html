@@ -23,6 +23,9 @@ input[type=range]{-webkit-appearance:none;width:100px;height:2px;background:var(
 input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:var(--ac);cursor:pointer}
 .clear-btn{margin-left:auto;padding:8px 20px;background:transparent;border:1px solid var(--bor);border-radius:8px;color:var(--mut);font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:border-color .2s,color .2s}
 .clear-btn:hover{border-color:var(--ac2);color:var(--ac2)}
+.bpm-btn{width:26px;height:26px;border-radius:6px;border:1px solid var(--bor);background:transparent;color:var(--txt);font-family:'Space Mono',monospace;font-size:14px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:border-color .2s,color .2s}
+.bpm-btn:hover{border-color:var(--ac);color:var(--ac)}
+.bpm-btn:active{transform:scale(.92)}
 .beat-numbers,.track,.playhead{width:100%;max-width:960px;display:grid;grid-template-columns:72px repeat(32,1fr);gap:3px}
 .beat-numbers{margin-bottom:4px}.playhead{margin-top:6px}
 .beat-num{font-family:'Space Mono',monospace;font-size:9px;color:var(--mut);text-align:center}
@@ -52,7 +55,9 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;heigh
   <div class="bpm-group">
     <span class="bpm-label">BPM</span>
     <span class="bpm-value" id="bpmVal">120</span>
+    <button class="bpm-btn" onclick="stepBpm(-1)">−</button>
     <input type="range" id="bpmSlider" min="60" max="180" value="120" oninput="document.getElementById('bpmVal').textContent=this.value">
+    <button class="bpm-btn" onclick="stepBpm(1)">+</button>
   </div>
   <button class="clear-btn" onclick="clearAll()">Azzera</button>
 </div>
@@ -94,6 +99,7 @@ let actx=null, bufs={};
 const phDots=[];
 function getCtx(){return actx||(actx=new(window.AudioContext||window.webkitAudioContext)());}
 function bpm(){return parseInt(document.getElementById('bpmSlider').value);}
+function stepBpm(delta){const s=document.getElementById('bpmSlider');const v=Math.min(parseInt(s.max),Math.max(parseInt(s.min),parseInt(s.value)+delta));s.value=v;document.getElementById('bpmVal').textContent=v;}
 function stepDur(){return 60/bpm()/8;}
 
 // Suoni sintetizzati
